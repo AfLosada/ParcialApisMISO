@@ -14,7 +14,7 @@ export class PlatoService {
     return this.platoRepository.find({ relations: ['restaurantes'] });
   }
 
-  async findOne(id: number): Promise<Plato> {
+  async findOne(id: number): Promise<Plato | null> {
     return this.platoRepository.findOne({ 
       where: { id },
       relations: ['restaurantes'] 
@@ -25,7 +25,7 @@ export class PlatoService {
     return this.platoRepository.save(plato);
   }
 
-  async update(id: number, plato: Plato): Promise<Plato> {
+  async update(id: number, plato: Plato): Promise<Plato | null> {
     await this.platoRepository.update(id, plato);
     return this.findOne(id);
   }

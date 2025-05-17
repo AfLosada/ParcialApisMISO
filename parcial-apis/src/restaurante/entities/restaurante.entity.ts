@@ -1,4 +1,4 @@
-import { Plato } from 'src/plato/entities/plato.entity';
+import { Plato } from '../../plato/entities/plato.entity';
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 

@@ -16,7 +16,7 @@ export class Plato {
   precio: number;
 
   @Column()
-  categoria: string; // entrada, plato fuerte, postre, bebida
+  categoria: string;
 
   @ManyToMany(() => Restaurante, restaurante => restaurante.platos)
   restaurantes: Restaurante[];

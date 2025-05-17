@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { RestauranteService } from './restaurante.service';
 import { CreateRestauranteDto } from './dto/create-restaurante.dto';
 import { UpdateRestauranteDto } from './dto/update-restaurante.dto';
@@ -28,7 +28,7 @@ export class RestauranteController {
     return this.restauranteService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateRestauranteDto: UpdateRestauranteDto) {
     const restaurante = new Restaurante();
     if (updateRestauranteDto.nombre) restaurante.nombre = updateRestauranteDto.nombre;
