@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { PlatoService } from './plato.service';
 import { CreatePlatoDto } from './dto/create-plato.dto';
 import { UpdatePlatoDto } from './dto/update-plato.dto';
@@ -28,7 +28,7 @@ export class PlatoController {
     return this.platoService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updatePlatoDto: UpdatePlatoDto) {
     const plato = new Plato();
     if (updatePlatoDto.nombre) plato.nombre = updatePlatoDto.nombre;

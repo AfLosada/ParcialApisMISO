@@ -23,14 +23,14 @@ let RestaurantePlatoController = class RestaurantePlatoController {
         this.restauranteService = restauranteService;
         this.platoService = platoService;
     }
-    async findPlatosByRestaurante(restauranteId) {
+    async findDishesByRestaurant(restauranteId) {
         const restaurante = await this.restauranteService.findOne(+restauranteId);
         if (!restaurante) {
             throw new common_1.NotFoundException(`Restaurante with ID ${restauranteId} not found`);
         }
         return restaurante.platos;
     }
-    async findPlatoInRestaurante(restauranteId, platoId) {
+    async findDishInRestaurant(restauranteId, platoId) {
         const restaurante = await this.restauranteService.findOne(+restauranteId);
         if (!restaurante) {
             throw new common_1.NotFoundException(`Restaurante with ID ${restauranteId} not found`);
@@ -41,11 +41,14 @@ let RestaurantePlatoController = class RestaurantePlatoController {
         }
         return plato;
     }
-    async addPlatoToRestaurante(restauranteId, platoId) {
+    async addDishToRestaurant(restauranteId, platoId) {
         return this.restauranteService.addPlatoToRestaurante(+restauranteId, +platoId);
     }
-    async removePlatoFromRestaurante(restauranteId, platoId) {
+    async removeDishFromRestaurant(restauranteId, platoId) {
         return this.restauranteService.removePlatoFromRestaurante(+restauranteId, +platoId);
+    }
+    async updateRestaurantDishes(restauranteId, dishIds) {
+        return this.restauranteService.updateRestaurantDishes(+restauranteId, dishIds);
     }
 };
 exports.RestaurantePlatoController = RestaurantePlatoController;
@@ -55,7 +58,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], RestaurantePlatoController.prototype, "findPlatosByRestaurante", null);
+], RestaurantePlatoController.prototype, "findDishesByRestaurant", null);
 __decorate([
     (0, common_1.Get)(':platoId'),
     __param(0, (0, common_1.Param)('restauranteId')),
@@ -63,7 +66,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
-], RestaurantePlatoController.prototype, "findPlatoInRestaurante", null);
+], RestaurantePlatoController.prototype, "findDishInRestaurant", null);
 __decorate([
     (0, common_1.Post)(':platoId'),
     __param(0, (0, common_1.Param)('restauranteId')),
@@ -71,7 +74,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
-], RestaurantePlatoController.prototype, "addPlatoToRestaurante", null);
+], RestaurantePlatoController.prototype, "addDishToRestaurant", null);
 __decorate([
     (0, common_1.Delete)(':platoId'),
     __param(0, (0, common_1.Param)('restauranteId')),
@@ -79,7 +82,15 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
-], RestaurantePlatoController.prototype, "removePlatoFromRestaurante", null);
+], RestaurantePlatoController.prototype, "removeDishFromRestaurant", null);
+__decorate([
+    (0, common_1.Put)(),
+    __param(0, (0, common_1.Param)('restauranteId')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Array]),
+    __metadata("design:returntype", Promise)
+], RestaurantePlatoController.prototype, "updateRestaurantDishes", null);
 exports.RestaurantePlatoController = RestaurantePlatoController = __decorate([
     (0, common_1.Controller)('restaurantes/:restauranteId/platos'),
     __metadata("design:paramtypes", [restaurante_service_1.RestauranteService,

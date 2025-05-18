@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const plato_entity_1 = require("./entities/plato.entity");
+const tipos_categoria = ["entrada", "plato fuerte", "postre", "bebida"];
 let PlatoService = class PlatoService {
     platoRepository;
     constructor(platoRepository) {
@@ -32,11 +33,21 @@ let PlatoService = class PlatoService {
         });
     }
     async create(plato) {
-        return this.platoRepository.save(plato);
+        if (tipos_categoria.includes(plato.categoria.toLowerCase())) {
+            return this.platoRepository.save(plato);
+        }
+        else {
+            throw new common_1.BadRequestException('Invalid dish type');
+        }
     }
     async update(id, plato) {
-        await this.platoRepository.update(id, plato);
-        return this.findOne(id);
+        if (tipos_categoria.includes(plato.categoria.toLowerCase())) {
+            await this.platoRepository.update(id, plato);
+            return this.findOne(id);
+        }
+        else {
+            throw new common_1.BadRequestException('Invalid dish type');
+        }
     }
     async remove(id) {
         await this.platoRepository.delete(id);

@@ -12,4 +12,5 @@ export declare class RestauranteService {
     remove(id: number): Promise<void>;
     addPlatoToRestaurante(restauranteId: number, platoId: number): Promise<Restaurante | null>;
     removePlatoFromRestaurante(restauranteId: number, platoId: number): Promise<Restaurante | null>;
+    updateRestaurantDishes(restauranteId: number, dishIds: number[]): Promise<Restaurante | null>;
 }

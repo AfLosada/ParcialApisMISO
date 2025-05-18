@@ -1,8 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { Restaurante } from './entities/restaurante.entity';
 import { Plato } from '../plato/entities/plato.entity';
+
+const cuisineTypes = ["italiana", "japonesa", "mexicana", "colombiana", "india", "internacional"];
 
 @Injectable()
 export class RestauranteService {
@@ -25,7 +27,11 @@ export class RestauranteService {
   }
 
   async create(restaurante: Restaurante): Promise<Restaurante> {
-    return this.restauranteRepository.save(restaurante);
+    if (cuisineTypes.includes(restaurante.tipoDeCocina.toLowerCase())){
+      return this.restauranteRepository.save(restaurante);
+    } else {
+      throw new BadRequestException('Invalid cuisine type');
+    }
   }
 
   async update(id: number, restaurante: Restaurante) {

@@ -10,8 +10,8 @@ exports.PlatoModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const plato_entity_1 = require("./entities/plato.entity");
-const plato_service_1 = require("./plato.service");
 const plato_controller_1 = require("./plato.controller");
+const plato_service_1 = require("./plato.service");
 let PlatoModule = class PlatoModule {
 };
 exports.PlatoModule = PlatoModule;

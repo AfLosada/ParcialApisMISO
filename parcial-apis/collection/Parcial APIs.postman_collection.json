@@ -1,0 +1,1219 @@
+{
+	"info": {
+		"_postman_id": "a3316bdb-536a-4e50-895f-34ffa61dad38",
+		"name": "Parcial APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30234468"
+	},
+	"item": [
+		{
+			"name": "Create Plato",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"entrada\", \"plato\", \"fuerte\", \"postre\", \"bebida\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCategoira\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"pm.globals.set(\"plato_id\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"descripcion\": \"{{$randomStreetAddress}}\",\n    \"precio\": \"{{$randomInt}}\",\n    \"categoria\": \"{{$randomAlphaNumeric}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/platos",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"platos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Restaurante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"pm.environment.set(\"restaurante_id\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"Italiana\", \"Japonesa\", \"Mexicana\", \"Colombiana\", \"India\", \"Internacional\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCuisine\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"tipoDeCocina\": \"{{randomCuisine}}\",\n    \"paginaWeb\": \"{{$randomUrl}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Plato to Restaurante",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"Italiana\", \"Japonesa\", \"Mexicana\", \"Colombiana\", \"India\", \"Internacional\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCuisine\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"precio\": \"{{$randomInt}}\",\n    \"categoria\": \"{{$randomAlphaNumeric}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes/{{restaurante_id}}/platos/{{plato_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{restaurante_id}}",
+						"platos",
+						"{{plato_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Platos from Restaurante",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"Italiana\", \"Japonesa\", \"Mexicana\", \"Colombiana\", \"India\", \"Internacional\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCuisine\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"precio\": \"{{$randomInt}}\",\n    \"categoria\": \"{{$randomAlphaNumeric}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes/{{restaurante_id}}/platos",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{restaurante_id}}",
+						"platos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Plato from Restaurante",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"Italiana\", \"Japonesa\", \"Mexicana\", \"Colombiana\", \"India\", \"Internacional\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCuisine\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"precio\": \"{{$randomInt}}\",\n    \"categoria\": \"{{$randomAlphaNumeric}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes/{{restaurante_id}}/platos/{{plato_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{restaurante_id}}",
+						"platos",
+						"{{plato_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Plato from Restaurante Invalid",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"Italiana\", \"Japonesa\", \"Mexicana\", \"Colombiana\", \"India\", \"Internacional\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCuisine\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.not.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"precio\": \"{{$randomInt}}\",\n    \"categoria\": \"{{$randomAlphaNumeric}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes/{{restaurante_id}}/platos/{{plato_id}}123",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{restaurante_id}}",
+						"platos",
+						"{{plato_id}}123"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Plato from Restaurante",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"Italiana\", \"Japonesa\", \"Mexicana\", \"Colombiana\", \"India\", \"Internacional\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCuisine\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"precio\": \"{{$randomInt}}\",\n    \"categoria\": \"{{$randomAlphaNumeric}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes/{{restaurante_id}}/platos/{{plato_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{restaurante_id}}",
+						"platos",
+						"{{plato_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Plato from Restaurante Invalid",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"Italiana\", \"Japonesa\", \"Mexicana\", \"Colombiana\", \"India\", \"Internacional\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCuisine\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"precio\": \"{{$randomInt}}\",\n    \"categoria\": \"{{$randomAlphaNumeric}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes/{{restaurante_id}}/platos/{{plato_id}}-invalid",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{restaurante_id}}",
+						"platos",
+						"{{plato_id}}-invalid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Restaurante Invalid",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"Italiana\", \"Japonesa\", \"Mexicana\", \"Colombiana\", \"India\", \"Internacional\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCuisine\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"pm.globals.set(\"restaurante_id\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"tipoDeCocina\": \"{{randomCuisine}}\",\n    \"paginaWeb\": \"{{$randomUrl}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Restaurantes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Restaurante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"tipoDeCocina\": \"{{randomCuisine}}\",\n    \"paginaWeb\": \"{{$randomUrl}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes/{{restaurante_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{restaurante_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Restaurante Invalid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.not.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"tipoDeCocina\": \"{{randomCuisine}}\",\n    \"paginaWeb\": \"{{$randomUrl}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes/{{restaurante_id}}-invalid",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{restaurante_id}}-invalid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Restaurante",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"Italiana\", \"Japonesa\", \"Mexicana\", \"Colombiana\", \"India\", \"Internacional\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCuisine\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"tipoDeCocina\": \"{{randomCuisine}}\",\n    \"paginaWeb\": \"{{$randomUrl}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes/{{restaurante_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{restaurante_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Restaurante",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"Italiana\", \"Japonesa\", \"Mexicana\", \"Colombiana\", \"India\", \"Internacional\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCuisine\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"tipoDeCocina\": \"{{randomCuisine}}\",\n    \"paginaWeb\": \"{{$randomUrl}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes/{{restaurante_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{restaurante_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Restaurante Invalid",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"Italiana\", \"Japonesa\", \"Mexicana\", \"Colombiana\", \"India\", \"Internacional\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCuisine\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"tipoDeCocina\": \"{{randomCuisine}}\",\n    \"paginaWeb\": \"{{$randomUrl}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes/{{restaurante_id}}-invalid",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{restaurante_id}}-invalid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Plato Invalid",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"entrada\", \"plato\", \"fuerte\", \"postre\", \"bebida\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCategoira\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"pm.globals.set(\"plato_id\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"descripcion\": \"{{$randomStreetAddress}}\",\n    \"precio\": \"{{$randomInt}}\",\n    \"categoria\": \"{{$randomAlphaNumeric}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/platos",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"platos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Platos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/restaurantes",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"restaurantes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Plato",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.not.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/plato/{{plato_id}}-invalid",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"plato",
+						"{{plato_id}}-invalid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Plato",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"entrada\", \"plato\", \"fuerte\", \"postre\", \"bebida\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCategoria\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"descripcion\": \"{{$randomStreetAddress}}\",\n    \"precio\": \"{{$randomInt}}\",\n    \"categoria\": \"{{randomCategoria}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/platos/{{plato_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"platos",
+						"{{plato_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Plato",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"Italiana\", \"Japonesa\", \"Mexicana\", \"Colombiana\", \"India\", \"Internacional\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCuisine\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"tipoDeCocina\": \"{{randomCuisine}}\",\n    \"paginaWeb\": \"{{$randomUrl}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/platos/{{plato_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"platos",
+						"{{plato_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Plato Invalid",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create an array of cuisine types",
+							"const cuisineTypes = [\"Italiana\", \"Japonesa\", \"Mexicana\", \"Colombiana\", \"India\", \"Internacional\"];",
+							"",
+							"// Generate a random index between 0 and the length of the array",
+							"const randomIndex = Math.floor(Math.random() * cuisineTypes.length);",
+							"",
+							"// Select the cuisine at the random index",
+							"const randomCuisine = cuisineTypes[randomIndex];",
+							"",
+							"// Set the value as a Postman variable (can be used as {{randomCuisine}} in your requests)",
+							"pm.variables.set(\"randomCuisine\", randomCuisine);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"{{$randomCompanyName}}\",\n    \"direccion\": \"{{$randomStreetAddress}}\",\n    \"tipoDeCocina\": \"{{randomCuisine}}\",\n    \"paginaWeb\": \"{{$randomUrl}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/platos/{{plato_id}}-invalid",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"platos",
+						"{{plato_id}}-invalid"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "default"
+		}
+	]
+}

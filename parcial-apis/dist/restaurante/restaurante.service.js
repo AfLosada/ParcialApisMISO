@@ -18,6 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const restaurante_entity_1 = require("./entities/restaurante.entity");
 const plato_entity_1 = require("../plato/entities/plato.entity");
+const cuisineTypes = ["italiana", "japonesa", "mexicana", "colombiana", "india", "internacional"];
 let RestauranteService = class RestauranteService {
     restauranteRepository;
     platoRepository;
@@ -35,7 +36,12 @@ let RestauranteService = class RestauranteService {
         });
     }
     async create(restaurante) {
-        return this.restauranteRepository.save(restaurante);
+        if (cuisineTypes.includes(restaurante.tipoDeCocina.toLowerCase())) {
+            return this.restauranteRepository.save(restaurante);
+        }
+        else {
+            throw new common_1.BadRequestException('Invalid cuisine type');
+        }
     }
     async update(id, restaurante) {
         await this.restauranteRepository.update(id, restaurante);
@@ -72,6 +78,23 @@ let RestauranteService = class RestauranteService {
             return restaurante;
         }
         restaurante.platos = restaurante.platos.filter(plato => plato.id !== platoId);
+        await this.restauranteRepository.save(restaurante);
+        return this.findOne(restauranteId);
+    }
+    async updateRestaurantDishes(restauranteId, dishIds) {
+        const restaurante = await this.findOne(restauranteId);
+        if (!restaurante) {
+            throw new common_1.NotFoundException(`Restaurante with ID ${restauranteId} not found`);
+        }
+        const plates = await this.platoRepository.findBy({
+            id: (0, typeorm_2.In)(dishIds),
+        });
+        if (plates.length !== dishIds.length) {
+            const foundIds = plates.map(plate => plate.id);
+            const missingIds = dishIds.filter(id => !foundIds.includes(id));
+            throw new common_1.NotFoundException(`Some plates were not found: ${missingIds.join(', ')}`);
+        }
+        restaurante.platos = plates;
         await this.restauranteRepository.save(restaurante);
         return this.findOne(restauranteId);
     }

@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Plato } from './entities/plato.entity';
+
+const tipos_categoria = ["entrada", "plato fuerte", "postre", "bebida"];
 
 @Injectable()
 export class PlatoService {
@@ -22,12 +24,20 @@ export class PlatoService {
   }
 
   async create(plato: Plato): Promise<Plato> {
-    return this.platoRepository.save(plato);
+    if (tipos_categoria.includes(plato.categoria.toLowerCase())){
+      return this.platoRepository.save(plato);
+    } else {
+      throw new BadRequestException('Invalid dish type');
+    }
   }
 
   async update(id: number, plato: Plato): Promise<Plato | null> {
-    await this.platoRepository.update(id, plato);
-    return this.findOne(id);
+    if (tipos_categoria.includes(plato.categoria.toLowerCase())){
+      await this.platoRepository.update(id, plato);
+      return this.findOne(id);
+    } else {
+      throw new BadRequestException('Invalid dish type');
+    }
   }
 
   async remove(id: number): Promise<void> {
